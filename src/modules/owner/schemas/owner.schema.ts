@@ -8,7 +8,7 @@ export const OwnerSchema = new mongoose.Schema(
       required: true,
     },
     purchaseDate: {
-      type: String,
+      type: Date,
       trim: true,
       required: true,
     },
