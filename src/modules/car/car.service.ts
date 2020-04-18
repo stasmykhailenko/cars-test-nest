@@ -30,4 +30,10 @@ export class CarService {
       new: true,
     });
   }
+
+  delete(id: string) {
+    return this.carModel.deleteOne({
+      _id: id,
+    });
+  }
 }
