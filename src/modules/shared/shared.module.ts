@@ -1,6 +1,9 @@
 import { Global, Module } from '@nestjs/common';
 
+import { ManufacturerModule } from '../manufacturer/manufacturer.module';
+
 const modules = [
+  ManufacturerModule,
 ];
 
 const services = [
