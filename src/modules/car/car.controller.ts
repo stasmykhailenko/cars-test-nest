@@ -26,6 +26,11 @@ export class CarController {
     return this.carService.find();
   }
 
+  @Get(':id')
+  getCar(@Param('id') id: string) {
+    return this.carService.findById(id);
+  }
+
   @Post()
   createCar(@Body() car: CreateCarDto) {
     return this.carService.create(car);

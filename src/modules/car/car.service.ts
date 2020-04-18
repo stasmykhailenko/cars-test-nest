@@ -19,6 +19,10 @@ export class CarService {
     return this.carModel.find({});
   }
 
+  findById(id: string) {
+    return this.carModel.findById(id);
+  }
+
   create(car: CreateCarDto) {
     return this.carModel.create(car);
   }
