@@ -33,12 +33,14 @@ export class CarController {
 
   @Put(':id')
   updateCar(@Param('id') id: string, @Body() updateCarData: UpdateCarDto) {
-    return this.carService.update(id, updateCarData);
+    return this.carService.findOneAndUpdate({ _id: id }, updateCarData);
   }
 
   @Delete(':id')
   @HttpCode(204)
   deleteCar(@Param('id') id: string) {
-    return this.carService.delete(id);
+    return this.carService.deleteOne({
+      _id: id,
+    });
   }
 }

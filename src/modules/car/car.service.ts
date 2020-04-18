@@ -23,17 +23,17 @@ export class CarService {
     return this.carModel.create(car);
   }
 
-  update(id: string, updateCarData: UpdateCarDto) {
-    return this.carModel.findOneAndUpdate({
-      _id: id,
-    }, updateCarData, {
-      new: true,
+  findOneAndUpdate(
+    conditions: { [key: string]: any },
+    updateCarData: UpdateCarDto,
+    returnNew: boolean = true,
+  ) {
+    return this.carModel.findOneAndUpdate(conditions, updateCarData, {
+      new: returnNew,
     });
   }
 
-  delete(id: string) {
-    return this.carModel.deleteOne({
-      _id: id,
-    });
+  deleteOne(conditions: { [key: string]: any }) {
+    return this.carModel.deleteOne(conditions);
   }
 }
