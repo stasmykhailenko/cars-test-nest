@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 
 import { CreateCarDto } from './dto/create-car.dto';
 import { CarService } from './car.service';
@@ -9,6 +9,11 @@ export class CarController {
   constructor(
     private readonly carService: CarService,
   ) {
+  }
+
+  @Get()
+  getCars() {
+    return this.carService.find();
   }
 
   @Post()

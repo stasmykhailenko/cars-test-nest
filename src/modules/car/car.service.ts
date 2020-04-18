@@ -14,6 +14,10 @@ export class CarService {
   ) {
   }
 
+  find() {
+    return this.carModel.find({});
+  }
+
   create(car: CreateCarDto) {
     return this.carModel.create(car);
   }
