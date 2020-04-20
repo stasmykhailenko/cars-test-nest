@@ -8,7 +8,7 @@ import { OwnerDoc } from './models/owner.model';
 @Injectable()
 export class OwnerService {
   constructor(
-    @InjectModel(' Owner')
+    @InjectModel('Owner')
     private readonly ownerModel: Model<OwnerDoc>,
   ) {
   }
