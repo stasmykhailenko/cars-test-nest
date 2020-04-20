@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 
 import { CreateCarDto } from './dto/create-car.dto';
@@ -27,7 +28,13 @@ export class CarController {
   }
 
   @Get(':id')
-  getCar(@Param('id') id: string) {
+  getCar(
+    @Param('id') id: string,
+    @Query('manufacturerOnly') manufacturerOnly: string
+  ) {
+    if (manufacturerOnly === 'true') {
+      return this.carService.getManufacturerByCarId(id);
+    }
     return this.carService.findById(id);
   }
 

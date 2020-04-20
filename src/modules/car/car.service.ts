@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 
 import { CarDoc } from './models/car.model';
 import { CreateCarDto } from './dto/create-car.dto';
@@ -39,5 +39,32 @@ export class CarService {
 
   deleteOne(conditions: { [key: string]: any }) {
     return this.carModel.deleteOne(conditions);
+  }
+
+  async getManufacturerByCarId(id: string) {
+    const [res] = await this.carModel.aggregate([
+      {
+        $match: {
+          _id: Types.ObjectId(id),
+        },
+      },
+      {
+        $lookup: {
+          from: 'manufacturers',
+          localField: 'manufacturer',
+          foreignField: '_id',
+          as: 'manufacturer',
+        },
+      },
+      {
+        $unwind: '$manufacturer',
+      },
+    ]);
+
+    if (!res || !res.manufacturer) {
+      throw new NotFoundException('Manufacturer not found');
+    }
+
+    return res && res.manufacturer;
   }
 }
