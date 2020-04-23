@@ -1,20 +1,11 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  HttpCode,
-  Param,
-  Post,
-  Put,
-  Query,
-} from '@nestjs/common';
+import { Controller } from '@nestjs/common';
+import { MessagePattern } from '@nestjs/microservices';
 
 import { CreateCarDto } from './dto/create-car.dto';
 import { CarService } from './car.service';
 import { UpdateCarDto } from './dto/update-car.dto';
 
-@Controller('cars')
+@Controller()
 export class CarController {
 
   constructor(
@@ -22,37 +13,37 @@ export class CarController {
   ) {
   }
 
-  @Get()
+  @MessagePattern({ cmd: 'getCars' })
   getCars() {
     return this.carService.find();
   }
 
-  @Get(':id')
-  getCar(
-    @Param('id') id: string,
-    @Query('manufacturerOnly') manufacturerOnly: string
-  ) {
-    if (manufacturerOnly === 'true') {
+  @MessagePattern({ cmd: 'getCar' })
+  getCar({ id, manufacturerOnly }: {
+      id: string,
+      manufacturerOnly: boolean,
+  }) {
+    if (manufacturerOnly) {
       return this.carService.getManufacturerByCarId(id);
     }
     return this.carService.findById(id);
   }
 
-  @Post()
-  createCar(@Body() car: CreateCarDto) {
+  @MessagePattern({ cmd: 'createCar' })
+  createCar({ car }: { car: CreateCarDto }) {
     return this.carService.create(car);
   }
 
-  @Put(':id')
-  updateCar(@Param('id') id: string, @Body() updateCarData: UpdateCarDto) {
-    return this.carService.findOneAndUpdate({ _id: id }, updateCarData);
+  @MessagePattern({ cmd: 'updateCar' })
+  updateCar({ _id, updateCarData }: {
+    _id: string,
+    updateCarData: UpdateCarDto,
+  }) {
+    return this.carService.findOneAndUpdate({ _id }, updateCarData);
   }
 
-  @Delete(':id')
-  @HttpCode(204)
-  deleteCar(@Param('id') id: string) {
-    return this.carService.deleteOne({
-      _id: id,
-    });
+  @MessagePattern({ cmd: 'deleteCar' })
+  deleteCar(conditions: { _id: string }) {
+    return this.carService.deleteOne(conditions);
   }
 }
