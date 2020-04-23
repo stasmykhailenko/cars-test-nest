@@ -9,6 +9,7 @@ export class Car {
   readonly price: number;
   readonly firstRegistrationDate: Date;
   readonly owners: Array<string | Owner>;
+  readonly discount?: number;
 }
 
 export type CarDoc = Car & Document;

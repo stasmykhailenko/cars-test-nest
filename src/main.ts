@@ -2,6 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { Transport } from '@nestjs/microservices';
 
+import * as moment from 'moment-timezone';
+
 import { AppModule } from './modules/app.module';
 import { RpcExceptionFilter } from './modules/core/filters/rpc-exception-filter';
 
@@ -18,6 +20,8 @@ async function bootstrap() {
   );
 
   app.useGlobalFilters(new RpcExceptionFilter());
+
+  moment.tz.setDefault('UTC');
 
   await app.listen(() => console.log('Microservice is listening'));
 }
