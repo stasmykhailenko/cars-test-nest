@@ -17,15 +17,23 @@ export class CarService {
   }
 
   find() {
-    return this.carModel.find({});
+    return this.carModel.find({})
+      .populate('owners')
+      .populate('manufacturer');
   }
 
   findById(id: string) {
-    return this.carModel.findById(id);
+    return this.carModel.findById(id)
+      .populate('owners')
+      .populate('manufacturer');
   }
 
-  create(car: CreateCarDto) {
-    return this.carModel.create(car);
+  async create(car: CreateCarDto) {
+    const createdCar = await this.carModel.create(car);
+    return createdCar
+      .populate('owners')
+      .populate('manufacturer')
+      .execPopulate();
   }
 
   findOneAndUpdate(
@@ -35,7 +43,9 @@ export class CarService {
   ) {
     return this.carModel.findOneAndUpdate(conditions, updateCarData, {
       new: returnNew,
-    });
+    })
+      .populate('owners')
+      .populate('manufacturer');
   }
 
   deleteOne(conditions: { [key: string]: any }) {
