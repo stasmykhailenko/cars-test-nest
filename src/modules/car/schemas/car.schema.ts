@@ -23,6 +23,11 @@ export const CarSchema = new mongoose.Schema(
       }],
       default: [],
     },
+    discount: {
+      type: Number,
+      min: 0,
+      max: 1,
+    },
   },
   {
     versionKey: false,

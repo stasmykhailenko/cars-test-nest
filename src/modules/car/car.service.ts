@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { Model, Types } from 'mongoose';
+import * as moment from 'moment';
 
 import { CarDoc } from './models/car.model';
 import { CreateCarDto } from './dto/create-car.dto';
@@ -66,5 +67,50 @@ export class CarService {
     }
 
     return res && res.manufacturer;
+  }
+
+  async deleteOwners(ids: string[]) {
+    return this.carModel.updateMany(
+      {
+        owners: {
+          $in: ids,
+        },
+      },
+      {
+        $pullAll: {
+          owners: ids,
+        },
+      },
+    );
+  }
+
+  addDiscountToCars() {
+    const fromSearchDate = moment().subtract(18, 'months').toDate();
+    const toSearchDate = moment().subtract(12, 'months').toDate();
+
+    return this.carModel.updateMany({
+      firstRegistrationDate: {
+        $gte: fromSearchDate,
+        $lte: toSearchDate,
+      },
+    }, {
+      $inc: {
+        discount: 0.2,
+      },
+    });
+  }
+
+  deleteDiscountFromCars() {
+    const searchDate = moment().subtract(18, 'months').toDate();
+
+    return this.carModel.updateMany({
+      firstRegistrationDate: {
+        $lt: searchDate,
+      },
+    }, {
+      $inc: {
+        discount: -0.2,
+      },
+    });
   }
 }
