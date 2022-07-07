@@ -29,7 +29,7 @@
     "class-transformer": "^0.2.3",
     "class-validator": "^0.11.1",
     "dotenv": "^8.2.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "moment-timezone": "^0.5.28",
     "mongoose": "^5.9.9",
     "reflect-metadata": "^0.1.13",
